@@ -1,5 +1,7 @@
 <ul class="subscription" data-subscription="rss">
+  {% if FEED_ATOM %}
   <li><a href="{{ FEED_DOMAIN }}/{{ FEED_ATOM }}" rel="subscribe-atom">Atom</a></li>
+  {% endif %}
   {% if FEED_RSS %}
   <li><a href="{{ FEED_DOMAIN }}/{{ FEED_RSS }}" rel="subscribe-rss">RSS</a></li>
   {% endif %}
@@ -13,7 +15,6 @@
 </form>
 
 <ul class="main-navigation">
-  <li><a href="{{ SITEURL }}/">Blog</a></li>
   {% for title, link in MENUITEMS %}
     <li><a href="{{ link }}">{{ title }}</a></li>
   {% endfor %}
@@ -21,6 +22,12 @@
     {% for page in PAGES %}
       <li><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></li>
     {% endfor %}
-    <!-- TODO: add categories here? -->
+    {% if DISPLAY_CATEGORIES_ON_MENU %}
+    {% for cat, null in categories %}
+    <li {% if cat == category %}class="active"{% endif %}>
+    <a href="{{ SITEURL }}/{{ cat.url }}">{{ cat | capitalize }}</a>
+    </li>
+    {% endfor %}
+    {% endif %}
   {% endif %}
 </ul>
